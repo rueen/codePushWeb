@@ -31,49 +31,56 @@
 
 <script>
 import { addProducts } from '@/serve';
+import { ref, reactive, onMounted } from 'vue';
+import { toast } from './toast/index';
+
+const labelCol = { span: 4 };
+const wrapperCol = { span: 14 };
 
 export default {
   name: 'AddApp',
   props: [],
   emits: [],
-  data () {
-    return {
-      visible: false,
-      labelCol: { span: 4 },
-      wrapperCol: { span: 14 },
-      form: {
-        name: '',
-        os: '',
-        platform: 'React-Native',
-        disabled: 0
-      }
-    };
-  },
-  mounted () {
-  },
-  methods: {
-    show () {
-      this.visible = true;
-    },
-    handleClose () {
-      this.visible = false;
-    },
-    addApps () {
-      this.dialogVisible = false;
-      this.addProducts();
-    },
-    async addProducts () {
-      const { success, message } = await addProducts({
-        ...this.form
+  setup(props, context){
+    const visible = ref(false);
+    const form = reactive({
+      name: '',
+      os: '',
+      platform: 'React-Native',
+      disabled: 0
+    })
+    const show = () => {
+      visible.value = true;
+    }
+    const handleClose = () => {
+      visible.value = false;
+    }
+    const handleAddProducts = async () => {
+      const { app } = await addProducts({
+        ...form
       });
-      if (success) {
-        this.$message({
-          message: message,
-          type: 'success'
-        });
-        this.visible = false;
-        // this.getList();
+      if (app && Object.keys(app).length) {
+        toast('添加成功');
+        visible.value = false;
+        context.emit('added');
       }
+    }
+    const addApps = () => {
+      handleAddProducts()
+    }
+
+    onMounted(() => {
+
+    })
+
+    return {
+      labelCol,
+      wrapperCol,
+      visible,
+      form,
+      show,
+      handleClose,
+      addApps
     }
   }
 };

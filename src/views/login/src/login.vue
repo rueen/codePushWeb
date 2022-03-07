@@ -24,35 +24,43 @@
 
 <script>
 import { login } from '@/serve';
+import { reactive, onMounted } from 'vue';
+import { toast } from '../../../components/toast';
+import { useRouter } from 'vue-router';
 
 export default {
-  name: 'Home',
+  name: 'Login',
   components: { },
-  data(){
-    return {
+  setup(){
+    const router = useRouter();
+    const form = reactive({
       form: {
         account: '',
         password: ''
       }
-    }
-  },
-  mounted(){
-    sessionStorage.setItem('token', '');
-  },
-  methods: {
-    async submit () {
+    });
+    const submit = async () => {
       const { results, errorMessage, status } = await login({
         minutes: 43200,
-        ...this.form
+        ...form
       });
       if (status === 'ERROR' && errorMessage) {
-        this.$message.error(errorMessage);
+        toast(errorMessage);
       } else if (results && results.tokens) {
         sessionStorage.setItem('token', results.tokens);
-        this.$router.push({
+        router.push({
           name: 'apps',
         });
       }
+    }
+
+    onMounted(() => {
+      sessionStorage.setItem('token', '');
+    })
+
+    return {
+      form,
+      submit
     }
   }
 }

@@ -31,75 +31,87 @@
       <a-typography-text code>{{key.key}}</a-typography-text>
     </div>
   </a-modal>
-  <AddApp ref="AddApp" />
+  <AddApp ref="addAppRef" @added="getList" />
 </template>
 
 <script>
 import { getAppList, getDeploymentKey } from '@/serve';
 import AddApp from '@/components/addApp.vue';
-// import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    slots: { customRender: 'name' }
+  },
+  {
+    title: 'os',
+    dataIndex: 'os',
+    key: 'os',
+  },
+  {
+    title: 'platform',
+    dataIndex: 'platform',
+    key: 'platform',
+  },
+  {
+    title: 'Deployments',
+    dataIndex: 'deployments',
+    key: 'deployments',
+    slots: { customRender: 'deployments' },
+  }
+];
 
 export default {
-  name: 'Home',
+  name: 'Apps',
   components: { AddApp },
-  data(){
-    return {
-      columns: [
-        {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
-          slots: { customRender: 'name' }
-        },
-        {
-          title: 'os',
-          dataIndex: 'os',
-          key: 'os',
-        },
-        {
-          title: 'platform',
-          dataIndex: 'platform',
-          key: 'platform',
-        },
-        {
-          title: 'Deployments',
-          dataIndex: 'deployments',
-          key: 'deployments',
-          slots: { customRender: 'deployments' },
-        }
-      ],
-      tableData: [],
-      keyModelVisible: false,
-      deployments: []
-    }
-  },
-  mounted(){
-    this.getList();
-  },
-  methods: {
-    async getList () {
+  setup(){
+    const tableData = ref([]);
+    const keyModelVisible = ref(false);
+    const deployments = ref([]);
+    const addAppRef = ref();
+    const router = useRouter();
+    const getList = async () => {
       const { apps } = await getAppList();
-      this.tableData = apps;
-    },
-    async viewKeys(item){
-      const { deployments } = await getDeploymentKey({
+      tableData.value = apps;
+    };
+    const viewKeys = async (item) => {
+      const { deployments: _deployments } = await getDeploymentKey({
         appName: item.name
       });
-      if(deployments && deployments.length){
-        this.keyModelVisible = true;
-        this.deployments = deployments;
+      if(_deployments && _deployments.length){
+        keyModelVisible.value = true;
+        deployments.value = _deployments;
       }
-    },
-    add(){
-      this.$refs.AddApp.show();
-    },
-    openDeployment(record){
-      this.$router.push({
+    }
+    const add = () => {
+      addAppRef.value.show();
+    }
+    const openDeployment = (record) => {
+      router.push({
         path:"/deployment",
         query:{
           record
         }
       });
+    }
+
+    onMounted(() => {
+      getList();
+    });
+    return {
+      columns,
+      tableData,
+      keyModelVisible,
+      deployments,
+      viewKeys,
+      add,
+      openDeployment,
+      addAppRef,
+      getList
     }
   }
 }

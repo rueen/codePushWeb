@@ -20,39 +20,40 @@
 </template>
 
 <script>
-// import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
 
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'os',
+    dataIndex: 'os',
+    key: 'os',
+  },
+  {
+    title: 'platform',
+    dataIndex: 'platform',
+    key: 'platform',
+  }
+];
 export default {
   name: 'Deployment',
-  data(){
+  setup(){
+    const tableData = ref([]);
+    const getList = () => {
+
+    };
+
+    onMounted(() => {
+      getList()
+    });
+
     return {
-      columns: [
-        {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
-        },
-        {
-          title: 'os',
-          dataIndex: 'os',
-          key: 'os',
-        },
-        {
-          title: 'platform',
-          dataIndex: 'platform',
-          key: 'platform',
-        }
-      ],
-      tableData: []
-    }
-  },
-  mounted(){
-    this.getList();
-    // console.log(useRouter());
-  },
-  methods: {
-    async getList () {
-      
+      tableData,
+      columns
     }
   }
 }

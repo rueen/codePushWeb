@@ -10,8 +10,8 @@
         :style="{ lineHeight: '64px' }"
       >
         <a-menu-item key="1">apps</a-menu-item>
-        <a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>
+        <!--<a-menu-item key="2">nav 2</a-menu-item>
+        <a-menu-item key="3">nav 3</a-menu-item>-->
       </a-menu>
     </div>
     <div>
@@ -39,19 +39,28 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
 export default {
-  name: 'App',
+  name: 'Layout',
   components: { },
-  data(){
-    return {
-      selectedKeys: ['1']
-    }
-  },
-  methods: {
-    logout(){
-      this.$router.push({
+  setup(){
+    const selectedKeys = ref(['1']);
+    const router = useRouter();
+    const logout = () => {
+      router.push({
         name: 'login',
       });
+    }
+
+    onMounted(() => {
+      
+    })
+
+    return {
+      selectedKeys,
+      logout
     }
   }
 }
