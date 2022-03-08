@@ -23,6 +23,18 @@
           {{item}}
         </p>
       </template>
+      <template #operation='{ record }'>
+        <a-space :size="10">
+          <a-popconfirm
+            title="确定删除吗?"
+            ok-text="确定"
+            cancel-text="取消"
+            @confirm="del(record)"
+          >
+            <a>删除</a>
+          </a-popconfirm>
+        </a-space>
+      </template>
     </a-table>
   </div>
   <a-modal v-model:visible="keyModelVisible" title="DeploymentKey" :footer="null">
@@ -35,10 +47,11 @@
 </template>
 
 <script>
-import { getAppList, getDeploymentKey } from '@/serve';
+import { getAppList, getDeploymentKey, deleteApp } from '@/serve';
 import AddApp from '@/components/addApp.vue';
 import { ref, onMounted, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
+import { toast } from '@/components/toast/index';
 
 const columns = [
   {
@@ -62,6 +75,10 @@ const columns = [
     dataIndex: 'deployments',
     key: 'deployments',
     slots: { customRender: 'deployments' },
+  },
+  {
+    title: '操作',
+    slots: { customRender: 'operation' },
   }
 ];
 
@@ -75,16 +92,22 @@ export default defineComponent({
     const addAppRef = ref();
     const router = useRouter();
     const getList = async () => {
-      const { apps } = await getAppList();
-      tableData.value = apps;
+      const { success, data, message } = await getAppList();
+      if(success){
+        tableData.value = data;
+      } else {
+        toast(message);
+      }
     };
     const viewKeys = async (item) => {
-      const { deployments: _deployments } = await getDeploymentKey({
+      const { success, data, message } = await getDeploymentKey({
         appName: item.name
       });
-      if(_deployments && _deployments.length){
+      if(success){
         keyModelVisible.value = true;
-        deployments.value = _deployments;
+        deployments.value = data;
+      } else {
+        toast(message)
       }
     }
     const add = () => {
@@ -99,6 +122,17 @@ export default defineComponent({
         }
       });
     }
+    const del = async (record) => {
+      const { success, message } = await deleteApp({
+        appName: record.name
+      });
+      if(success){
+        toast('删除成功')
+        getList();
+      } else {
+        toast(message)
+      }
+    }
 
     onMounted(() => {
       getList();
@@ -112,7 +146,8 @@ export default defineComponent({
       add,
       openDeployment,
       addAppRef,
-      getList
+      getList,
+      del
     }
   }
 })

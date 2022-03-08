@@ -56,13 +56,15 @@ export default {
       visible.value = false;
     }
     const handleAddProducts = async () => {
-      const { app } = await addProducts({
+      const { success, message } = await addProducts({
         ...form
       });
-      if (app && Object.keys(app).length) {
+      if (success) {
         toast('添加成功');
         visible.value = false;
         context.emit('added');
+      } else {
+        toast(message);
       }
     }
     const addApps = () => {

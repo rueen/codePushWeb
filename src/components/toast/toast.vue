@@ -30,7 +30,7 @@ export default {
   min-width: 280px;
   min-height: 56px;
   position: fixed;
-  z-index: 9;
+  z-index: 9999;
   left: 50%;
   bottom: 16%;
   border: 1px solid #e4e4e4;

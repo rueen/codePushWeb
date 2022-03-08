@@ -8,10 +8,11 @@
         mode="horizontal"
         v-model:selectedKeys="selectedKeys"
         :style="{ lineHeight: '64px' }"
+        @click="handleClick"
       >
         <a-menu-item key="1">apps</a-menu-item>
-        <!--<a-menu-item key="2">nav 2</a-menu-item>
-        <a-menu-item key="3">nav 3</a-menu-item>-->
+        <!--<a-menu-item key="2">账号管理</a-menu-item>-->
+        <!--<a-menu-item key="3">nav 3</a-menu-item>-->
       </a-menu>
     </div>
     <div>
@@ -53,6 +54,22 @@ export default defineComponent({
         name: 'login',
       });
     }
+    const handleClick = (e) => {
+      switch(e.key){
+        case '1':
+          router.push({
+            name: 'apps',
+          });
+          break;
+        case '2':
+          router.push({
+            name: 'collaborators',
+          });
+          break;
+        default:
+          break;
+      }
+    }
 
     onMounted(() => {
       
@@ -60,7 +77,8 @@ export default defineComponent({
 
     return {
       selectedKeys,
-      logout
+      logout,
+      handleClick
     }
   }
 })

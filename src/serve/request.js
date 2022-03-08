@@ -61,6 +61,25 @@ class RestApi {
       })
   }
 
+  async delete ({
+    url = '/', data = {}, isShowErrorTips = true
+  }) {
+    this.isShowErrorTips = isShowErrorTips;
+    let config = {
+      method: 'DELETE',
+      headers: this.headers,
+      timeout: this.timeout,
+      url: `${conf.host}${url}`,
+      data
+    };
+
+    return axios(config)
+      .then(this.dealResponse)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   dealResponse (res) {
     if (res.status !== 200) {
       console.log(res);

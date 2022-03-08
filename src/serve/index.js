@@ -14,6 +14,13 @@ const serve = {
       data
     });
   },
+  // 删除app
+  async deleteApp (data) {
+    return request.delete({
+      url: urls.deleteApp(data),
+      data
+    });
+  },
   // 添加应用
   async addProducts (data) {
     return request.post({
@@ -42,10 +49,24 @@ const serve = {
       data
     });
   },
+  // 版本回退
+  async rollback(data){
+    return request.post({
+      url: urls.rollback(data),
+      data
+    });
+  },
   // 回退label
   async rollbackAsLabel(data){
     return request.post({
       url: urls.rollbackAsLabel(data),
+      data
+    });
+  },
+  // 获取参与者列表
+  async getCollaborators(data){
+    return request.post({
+      url: urls.getCollaborators(data),
       data
     });
   }
@@ -55,8 +76,12 @@ export default serve;
 export const {
   login,
   getAppList,
+  deleteApp,
   addProducts,
   getDeploymentKey,
   getDeploymentsHistory,
-  rollbackAsLabel
+  getMetrics,
+  rollback,
+  rollbackAsLabel,
+  getCollaborators
 } = serve;

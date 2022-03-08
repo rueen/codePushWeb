@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AppsRouter from './views/apps/router'
+import CollaboratorsRouter from './views/collaborators/router'
 import LoginRouter from './views/login/router'
 import Layout from './views/layout/index'
 
@@ -9,7 +10,8 @@ const routes = [
     path: '/',
     component: Layout,
     children: [
-      ...AppsRouter
+      ...AppsRouter,
+      ...CollaboratorsRouter
     ]
   },
   ...LoginRouter
