@@ -1,11 +1,19 @@
 const urls = {
   login: '/auth/login', // 登录
   list: '/apps', // 获取应用列表
-  getDeploymentKey: (appName) => {
-    return `/apps/${appName}/deployments`
+  getDeploymentKey: (data) => {
+    return `/apps/${data.appName}/deployments`
   },
-  getDeploymentsListByDeploymentKey: () => {
-    return ``
+  getDeploymentsHistory: (data) => {
+    return `/apps/${data.appName}/deployments/${data.deploymentName}/history`
+  },
+  // 获取更新情况
+  getMetrics: (data) => {
+    return `/apps/${data.appName}/deployments/${data.deploymentName}/metrics`
+  },
+  // 回退
+  rollbackAsLabel: (data) => {
+    return `/apps/${data.appName}/deployments/${data.deploymentName}/rollback/${data.label}`
   }
 };
 

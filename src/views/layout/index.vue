@@ -33,16 +33,16 @@
     <router-view/>
   </a-layout-content>
   <a-layout-footer style="text-align: center">
-    haidai ©2021 Created by haidai UED
+    haidai ©2022 Created by haidai UED
   </a-layout-footer>
 </a-layout>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 
-export default {
+export default defineComponent({
   name: 'Layout',
   components: { },
   setup(){
@@ -63,7 +63,7 @@ export default {
       logout
     }
   }
-}
+})
 </script>
 
 <style>

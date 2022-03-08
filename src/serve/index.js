@@ -24,14 +24,28 @@ const serve = {
   // 获取 DeploymentKey
   async getDeploymentKey (data) {
     return request.get({
-      url: urls.getDeploymentKey(data.appName),
+      url: urls.getDeploymentKey(data),
       data
     });
   },
-  // 根据 DeploymentKey 获取 DeploymentsList
-  async getDeploymentsListByDeploymentKey (data) {
+  // 根据 DeploymentKey 获取 Deployments List
+  async getDeploymentsHistory (data) {
     return request.get({
-      url: urls.getDeploymentsListByDeploymentKey(data.deploymentKey),
+      url: urls.getDeploymentsHistory(data),
+      data
+    });
+  },
+  // 获取更新情况
+  async getMetrics(data){
+    return request.get({
+      url: urls.getMetrics(data),
+      data
+    });
+  },
+  // 回退label
+  async rollbackAsLabel(data){
+    return request.post({
+      url: urls.rollbackAsLabel(data),
       data
     });
   }
@@ -43,5 +57,6 @@ export const {
   getAppList,
   addProducts,
   getDeploymentKey,
-  getDeploymentsListByDeploymentKey
+  getDeploymentsHistory,
+  rollbackAsLabel
 } = serve;

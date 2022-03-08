@@ -1,6 +1,20 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { Button, Layout, Menu, Breadcrumb, Modal, Input, Table, Form, Select, Dropdown, Typography } from 'ant-design-vue';
+import {
+  Button,
+  Layout,
+  Menu,
+  Breadcrumb,
+  Modal,
+  Input,
+  Table,
+  Form,
+  Select,
+  Dropdown,
+  Typography,
+  Popconfirm,
+  Space
+} from 'ant-design-vue';
 import router from './router.js'
 import { toast } from './components/toast/index';
 
@@ -21,4 +35,6 @@ app
 .use(Select)
 .use(Dropdown)
 .use(Typography)
+.use(Popconfirm)
+.use(Space)
 .mount('#app')

@@ -19,7 +19,7 @@
         </div>
       </template>
       <template #deployments={record}>
-        <p :class="`deployment-${item}`" v-for="item in record.deployments" :key="item" @click="openDeployment(record)">
+        <p :class="`deployment-${item}`" v-for="item in record.deployments" :key="item" @click="openDeployment(record, item)">
           {{item}}
         </p>
       </template>
@@ -37,7 +37,7 @@
 <script>
 import { getAppList, getDeploymentKey } from '@/serve';
 import AddApp from '@/components/addApp.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 
 const columns = [
@@ -65,7 +65,7 @@ const columns = [
   }
 ];
 
-export default {
+export default defineComponent({
   name: 'Apps',
   components: { AddApp },
   setup(){
@@ -90,11 +90,12 @@ export default {
     const add = () => {
       addAppRef.value.show();
     }
-    const openDeployment = (record) => {
+    const openDeployment = (record, item) => {
       router.push({
         path:"/deployment",
         query:{
-          record
+          appName: record.name,
+          deploymentName: item
         }
       });
     }
@@ -114,7 +115,7 @@ export default {
       getList
     }
   }
-}
+})
 </script>
 
 <style scoped>

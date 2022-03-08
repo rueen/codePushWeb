@@ -24,11 +24,11 @@
 
 <script>
 import { login } from '@/serve';
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, defineComponent } from 'vue';
 import { toast } from '../../../components/toast';
 import { useRouter } from 'vue-router';
 
-export default {
+export default defineComponent({
   name: 'Login',
   components: { },
   setup(){
@@ -48,7 +48,7 @@ export default {
         toast(errorMessage);
       } else if (results && results.tokens) {
         sessionStorage.setItem('token', results.tokens);
-        router.push({
+        router.replace({
           name: 'apps',
         });
       }
@@ -63,7 +63,7 @@ export default {
       submit
     }
   }
-}
+})
 </script>
 
 <style scoped>
